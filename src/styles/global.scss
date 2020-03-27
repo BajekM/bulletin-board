@@ -1,0 +1,10 @@
+@import "settings.scss";
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}

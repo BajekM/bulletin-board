@@ -1,0 +1,31 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  text-align: center;
+  padding: 15px;
+
+  .add {
+    margin: 20px auto;
+  }
+
+  table {
+    th {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    td {
+      a, a:visited {
+        text-decoration: none;
+      }
+    }
+
+    th, td {
+      text-align: center;
+    }
+
+    .w10 {
+      width: 10%;
+    }
+  }
+}

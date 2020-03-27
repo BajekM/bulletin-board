@@ -1,0 +1,30 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  padding: 15px;
+
+  table {
+    th {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    th, td {
+      text-align: center;
+    }
+
+    td {
+      a {
+        margin: 7px 15px;
+      }
+    }
+
+    .w5 {
+      width: 5%;
+    }
+
+    .w10 {
+      width: 10%;
+    }
+  }
+}

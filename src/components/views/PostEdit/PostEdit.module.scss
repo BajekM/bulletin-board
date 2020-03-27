@@ -1,0 +1,30 @@
+@import '../../../styles/settings.scss';
+
+.root {
+
+  table {
+    th {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    th, td {
+      text-align: center;
+    }
+
+    td {
+      button {
+        margin: 15px 20px;
+      }
+
+      textarea {
+        width: 80%;
+        min-height: 100px;
+      }
+    }
+
+    .w40 {
+      width: 40%
+    }
+  }
+}

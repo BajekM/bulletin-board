@@ -1,0 +1,15 @@
+@import '../../../styles/settings.scss';
+
+.root {
+
+  background: url('https://images.pexels.com/photos/1629212/pexels-photo-1629212.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+  height: 200px;
+  position: relative;
+
+  .buttonsWrapper {
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    align-items: center;
+  }
+}
