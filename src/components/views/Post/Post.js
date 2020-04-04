@@ -14,23 +14,24 @@ import EditIcon from '@material-ui/icons/Edit';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser, getAll, deletePost} from '../../../redux/postsRedux';
+import { getUser, getAll, removePost} from '../../../redux/postsRedux';
 
 
 import styles from './Post.module.scss';
 
 
-const Component = ({className, user, match, posts, removePost}) => (
+const Component = ({className, user, match, posts, deletePost}) => (
   <div className={clsx(className, styles.root)}>
     <Paper>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell className={styles.w5}>Nr</TableCell>
-            <TableCell className={styles.w10}>Date</TableCell>
-            <TableCell className={styles.w10}>Author</TableCell>
-            <TableCell className={styles.w10}>Title</TableCell>
-            <TableCell>Content</TableCell>
+            <TableCell >Author</TableCell>
+            <TableCell >Created</TableCell>
+            <TableCell >Updated</TableCell>
+            <TableCell>Text</TableCell>
+            <TableCell>Photo</TableCell>
+            <TableCell>Data</TableCell>
             {user === 'logged' || user === 'logged author' || user === 'admin' ?
               <TableCell className={styles.w10}>Actions</TableCell>
               :
@@ -40,11 +41,16 @@ const Component = ({className, user, match, posts, removePost}) => (
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell>{posts.find(post => post.id === parseInt(match.params.id)).id}</TableCell>
-            <TableCell>{posts.find(post => post.id === parseInt(match.params.id)).date}</TableCell>
-            <TableCell>{posts.find(post => post.id === parseInt(match.params.id)).author}</TableCell>
-            <TableCell>{posts.find(post => post.id === parseInt(match.params.id)).title}</TableCell>
-            <TableCell>{posts.find(post => post.id === parseInt(match.params.id)).content}</TableCell>
+            <TableCell className={styles.w10}>{posts.find(post => post._id === (match.params.id)).author}</TableCell>
+            <TableCell className={styles.w15}>{posts.find(post => post._id === (match.params.id)).created}</TableCell>
+            <TableCell className={styles.w15}>{posts.find(post => post._id === (match.params.id)).updated}</TableCell>
+            <TableCell className={styles.w35}>{posts.find(post => post._id === (match.params.id)).text}</TableCell>
+            <TableCell className={styles.w15}>{posts.find(post => post._id === (match.params.id)).photo}</TableCell>
+            <TableCell>
+              <div>Price: {posts.find(post => post._id === (match.params.id)).price}</div>
+              <div>Phone: {posts.find(post => post._id === (match.params.id)).phone}</div>
+              <div>Location: {posts.find(post => post._id === (match.params.id)).location}</div>
+            </TableCell>
             <TableCell>
               {user === 'logged author' || user === 'admin' ?
                 <div>
@@ -52,7 +58,7 @@ const Component = ({className, user, match, posts, removePost}) => (
                     variant="contained"
                     color="secondary"
                     startIcon={<DeleteIcon />}
-                    onClick={() => removePost(posts.find(post => post.id === parseInt(match.params.id)))}
+                    onClick={() => deletePost(match.params.id)}
                     href="/"
                   >
                     Delete
@@ -82,7 +88,7 @@ Component.propTypes = {
   user: PropTypes.string,
   match: PropTypes.object,
   posts: PropTypes.array,
-  removePost: PropTypes.func,
+  deletePost: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -91,7 +97,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  removePost: post => dispatch(deletePost(post)),
+  deletePost: (id) => dispatch(removePost(id)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

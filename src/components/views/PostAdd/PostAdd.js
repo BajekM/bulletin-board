@@ -16,7 +16,7 @@ import {NotFound} from '../NotFound/NotFound';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser, getAll, addPost } from '../../../redux/postsRedux';
+import { getUser, getAll, addNew } from '../../../redux/postsRedux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './PostAdd.module.scss';
@@ -25,14 +25,18 @@ class Component extends React.Component {
 
   state = {
     title: '',
-    content: '',
+    text: '',
+    photo: '',
+    price: '',
+    phone: '',
+    location: '',
   }
 
   static propTypes = {
     className: PropTypes.string,
     user: PropTypes.string,
-    posts: PropTypes.object,
-    addBulletin: PropTypes.func,
+    posts: PropTypes.array,
+    addNewPost: PropTypes.func,
   }
 
   handleChange(prop, newValue) {
@@ -42,38 +46,64 @@ class Component extends React.Component {
           title: newValue,
         }
       ));
-    } else if (prop === 'content') {
+    } else if (prop === 'text') {
       this.setState(state => (
         {
-          content: newValue,
+          text: newValue,
+        }
+      ));
+    } else if (prop === 'photo') {
+      this.setState(state => (
+        {
+          photo: newValue,
+        }
+      ));
+    } else if (prop === 'price') {
+      this.setState(state => (
+        {
+          price: newValue,
+        }
+      ));
+    } else if (prop === 'phone') {
+      this.setState(state => (
+        {
+          phone: newValue,
+        }
+      ));
+    } else if (prop === 'location') {
+      this.setState(state => (
+        {
+          location: newValue,
         }
       ));
     }
   }
 
-  setDate() {
-    const now = new Date();
-    const day = now.getDate();
-    const month = now.getMonth();
-    const year = now.getFullYear();
+  // setDate() {
+  //   const now = new Date();
+  //   const day = now.getDate();
+  //   const month = now.getMonth();
+  //   const year = now.getFullYear();
 
-    const date = (day < 10 ? '0' : '') + day + '-' + (month < 10 ? '0' : '') + month + '-' + year;
-    // console.log(date);
-    return date;
-  }
+  //   const date = (day < 10 ? '0' : '') + day + '-' + (month < 10 ? '0' : '') + month + '-' + year;
+  //   // console.log(date);
+  //   return date;
+  // }
 
   render() {
-    const {className, user, posts, addBulletin} = this.props;
-    const {title, content} = this.state;
+    const {className, user, addNewPost} = this.props;
+    const {title, text, photo, phone, price, location} = this.state;
     return (
       <div className={clsx(className, styles.root)}>
-        {user === 'logged' || user === 'admin' ?
+        {user === 'logged' || user === 'admin' || user ==='logged author'?
           <Paper>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell className={styles.w40}>Title</TableCell>
-                  <TableCell>Contents</TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell className={styles.w40}>Text</TableCell>
+                  <TableCell>Photo</TableCell>
+                  <TableCell>Data</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -83,6 +113,7 @@ class Component extends React.Component {
                       id="newTitle"
                       label="NewTitle"
                       type="text"
+                      variant="outlined"
                       defaultValue= {''}
                       InputLabelProps={{
                         shrink: true,
@@ -91,18 +122,61 @@ class Component extends React.Component {
                     />
                   </TableCell>
                   <TableCell>
-                    <TextareaAutosize aria-label="minimum height" rowsMin={3} placeholder="Content" onChange={(e) => this.handleChange('content', e.target.value)} />
+                    <TextareaAutosize aria-label="minimum height" id="photo" rowsmin={3} placeholder="Content" onChange={(e) => this.handleChange('text', e.target.value)} />
+                  </TableCell>
+                  <TableCell>
+                    <input
+                      type="file"
+                    />
+                  </TableCell>
+                  <TableCell className={styles.dataWrapper}>
+                    <TextField
+                      id="price"
+                      label="Price"
+                      type="number"
+                      inputProps={{ min: '1', max: '10', step: '1' }}
+                      defaultValue= {''}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => this.handleChange('price', e.target.value)}
+                    />
+                    <TextField
+                      id="phone"
+                      label="Phone"
+                      type="text"
+                      defaultValue= {''}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => this.handleChange('phone', e.target.value)}
+                    />
+                    <TextField
+                      id="location"
+                      label="Location"
+                      type="text"
+                      defaultValue= {''}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => this.handleChange('location', e.target.value)}
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
-            <Button className={styles.add} variant="outlined" color="primary" href='/' onClick={
-              () => addBulletin({
-                id: posts.length + 1,
-                title,
+            <Button className={styles.add} variant="outlined" color="primary"  onClick={
+              () => addNewPost({
                 author: 'Me',
-                date: this.setDate(),
-                content,
+                title,
+                text,
+                photo,
+                price,
+                phone,
+                location,
+                created: new Date(),
+                updated: new Date(),
+                status: 'published',
               })
             }>
             + Add
@@ -123,7 +197,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addBulletin: obj => dispatch(addPost(obj)),
+  // addBulletin: obj => dispatch(addPost(obj)),
+  addNewPost: (obj) => dispatch(addNew(obj)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

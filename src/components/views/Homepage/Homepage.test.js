@@ -8,13 +8,13 @@ const mockProps = {
     {
       id: 1,
       title: 'title1',
-    },
-
-    {
-      id: 2,
-      title: 'title2',
+      author: 'author1',
+      created: 'date1',
+      updated: 'date2',
+      status: 'status1',
     },
   ],
+  fetchPublishedPosts: () => console.log(''),
 };
 
 describe('Component Homepage',  () => {

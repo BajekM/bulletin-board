@@ -19,12 +19,24 @@
         min-height: 100px;
       }
     }
+
+    .dataWrapper {
+      display: flex;
+      flex-direction: column;
+
+      input {
+        display: block;
+        width: 80%;
+        margin-top: 15px;
+      }
+    }
+
     .w40 {
       width: 40%;
     }
   }
 
-  a {
+  button {
     margin: 30px 30px;
   }
 }

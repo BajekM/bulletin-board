@@ -17,7 +17,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getUser, changeTitle, changeContent } from '../../../redux/postsRedux';
+import { getUser, modifyPost, getAll, fetchPublished } from '../../../redux/postsRedux';
 
 import styles from './PostEdit.module.scss';
 
@@ -25,15 +25,20 @@ class Component extends React.Component {
 
   state = {
     title: '',
-    content: '',
+    text: '',
+    photo: '',
+    price: '',
+    phone: '',
+    location: '',
   }
 
   static propTypes = {
     className: PropTypes.string,
     user: PropTypes.string,
-    modifyContent: PropTypes.func,
-    modifyTitle: PropTypes.func,
+    modify: PropTypes.func,
     match: PropTypes.object,
+    posts: PropTypes.array,
+    fetchPublishedPosts: PropTypes.func,
   }
 
   handleChange(prop, newValue) {
@@ -43,10 +48,34 @@ class Component extends React.Component {
           title: newValue,
         }
       ));
-    } else if (prop === 'content') {
+    } else if (prop === 'text') {
       this.setState(state => (
         {
-          content: newValue,
+          text: newValue,
+        }
+      ));
+    } else if (prop === 'photo') {
+      this.setState(state => (
+        {
+          photo: newValue,
+        }
+      ));
+    } else if (prop === 'price') {
+      this.setState(state => (
+        {
+          price: newValue,
+        }
+      ));
+    } else if (prop === 'phone') {
+      this.setState(state => (
+        {
+          phone: newValue,
+        }
+      ));
+    } else if (prop === 'location') {
+      this.setState(state => (
+        {
+          location: newValue,
         }
       ));
     }
@@ -64,8 +93,15 @@ class Component extends React.Component {
   }
 
   render() {
-    const {className, user, modifyTitle, modifyContent, match} = this.props;
-    const {title, content} = this.state;
+    const {className, user, modify, match, posts, fetchPublishedPosts} = this.props;
+    const {title, text, photo, price, phone, location } = this.state;
+
+    fetchPublishedPosts();
+
+    console.log(posts);
+    const thisPost = posts.find(post => post._id === match.params.id);
+    console.log(thisPost);
+
     return (
       <div className={clsx(className, styles.root)}>
         {user === 'logged author' || user === 'admin' ?
@@ -73,8 +109,10 @@ class Component extends React.Component {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell className={styles.w40}>Title</TableCell>
-                  <TableCell>Contents</TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell className={styles.w40}>Text</TableCell>
+                  <TableCell>Photo</TableCell>
+                  <TableCell>Data</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -94,13 +132,12 @@ class Component extends React.Component {
                       variant="contained"
                       color="primary"
                       size="small"
-                      onClick={
-                        () => modifyTitle({
-                          id: parseInt(match.params.id),
+                      onClick={ title ?
+                        () => modify({
+                          ...thisPost,
+                          update: new Date(),
                           title,
-                          content,
-                          update: this.setDate(),
-                        })
+                        }) : ''
                       }
                       startIcon={<SaveIcon />}
                     >
@@ -108,18 +145,115 @@ class Component extends React.Component {
                     </Button>
                   </TableCell>
                   <TableCell>
-                    <TextareaAutosize aria-label="minimum height" rowsmin={3} placeholder="New content"  onChange={(e) => this.handleChange('content', e.target.value)} />
+                    <TextareaAutosize aria-label="minimum height" rowsmin={3} placeholder="New content"  onChange={(e) => this.handleChange('text', e.target.value)} />
                     <Button
                       variant="contained"
                       color="primary"
                       size="small"
-                      onClick={
-                        () => modifyContent({
-                          id: parseInt(match.params.id),
-                          title,
-                          content,
-                          update: this.setDate(),
-                        })
+                      onClick={ text ?
+                        () => modify({
+                          ...posts.find(post => post._id === (match.params.id)),
+                          update: new Date(),
+                          text,
+                        }) : ''
+                      }
+                      startIcon={<SaveIcon />}
+                    >
+                      Save
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <input
+                      type="file"
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={ photo ?
+                        () => modify({
+                          ...posts.find(post => post._id === (match.params.id)),
+                          update: new Date(),
+                          photo,
+                        }) : ''
+                      }
+                      startIcon={<SaveIcon />}
+                    >
+                      Save
+                    </Button>
+                  </TableCell>
+                  <TableCell className={styles.dataWrapper}>
+                    <TextField
+                      id="price"
+                      label="Price"
+                      type="number"
+                      inputProps={{ min: '1', max: '10', step: '1' }}
+                      defaultValue= {''}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => this.handleChange('price', e.target.value)}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={ price ?
+                        () => modify({
+                          ...posts.find(post => post._id === (match.params.id)),
+                          update: new Date(),
+                          price,
+                        }) : ''
+                      }
+                      startIcon={<SaveIcon />}
+                    >
+                      Save
+                    </Button>
+                    <TextField
+                      id="phone"
+                      label="Phone"
+                      type="text"
+                      defaultValue= {''}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => this.handleChange('phone', e.target.value)}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={ phone ?
+                        () => modify({
+                          ...posts.find(post => post._id === (match.params.id)),
+                          update: new Date(),
+                          phone,
+                        }) : ''
+                      }
+                      startIcon={<SaveIcon />}
+                    >
+                      Save
+                    </Button>
+                    <TextField
+                      id="location"
+                      label="Location"
+                      type="text"
+                      defaultValue= {''}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => this.handleChange('location', e.target.value)}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={ location ?
+                        () => modify({
+                          ...posts.find(post => post._id === (match.params.id)),
+                          update: new Date(),
+                          location,
+                        }) : ''
                       }
                       startIcon={<SaveIcon />}
                     >
@@ -140,11 +274,12 @@ class Component extends React.Component {
 
 const mapStateToProps = state => ({
   user: getUser(state),
+  posts: getAll(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-  modifyTitle: obj => dispatch(changeTitle(obj)),
-  modifyContent: obj => dispatch(changeContent(obj)),
+  modify: obj => dispatch(modifyPost(obj)),
+  fetchPublishedPosts: () => dispatch(fetchPublished()),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

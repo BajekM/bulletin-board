@@ -1,6 +1,7 @@
 @import '../../../styles/settings.scss';
 
 .root {
+  text-align: center;
 
   table {
     th {
@@ -13,18 +14,34 @@
     }
 
     td {
-      button {
-        margin: 15px 20px;
-      }
-
       textarea {
-        width: 80%;
+        width: 100%;
         min-height: 100px;
       }
     }
 
-    .w40 {
-      width: 40%
+    .dataWrapper {
+      display: flex;
+      flex-direction: column;
+
+      button {
+        width: 40%;
+        margin: 15px auto;
+      }
+
+      input {
+        display: block;
+        width: 80%;
+        margin-top: 15px;
+      }
     }
+
+    .w40 {
+      width: 40%;
+    }
+  }
+
+  a {
+    margin: 30px 30px;
   }
 }

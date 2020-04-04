@@ -6,32 +6,28 @@ import { PostComponent } from './Post';
 describe('Component Post', () => {
   const mockProps = {
     user: 'logged author',
-    match: {
-      params: {
-      },
-    },
     posts: [
       {
-        id: 1,
+        _id: 'abcde123',
         title: 'title1',
         date: 'date1',
         author: 'author1',
         content: 'content1',
-      },
-
-      {
-        id: 2,
-        title: 'title2',
-        date: 'date2',
-        author: 'author2',
-        content: 'content2',
+        created: 'date1',
+        updated: 'date2',
+        status: 'status1',
       },
     ],
-
+    match: {
+      params: {
+      },
+    },
   };
 
-  mockProps.match.params.id = 1;
-  
+  mockProps.match.params.id = 'abcde123';
+
+  console.log(mockProps.match.params.id);
+
   it('should render without crashing', () => {
     const component =  shallow(<PostComponent  {...mockProps}/>);
     expect(component).toBeTruthy();
